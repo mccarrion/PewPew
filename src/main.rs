@@ -27,9 +27,9 @@ impl event::EventHandler for MainState {
 
         let square = graphics::Mesh::new_rectangle(
             ctx,
-            graphics::DrawMode::fill(),
-            &[na::Point2::new(self.pos_x, 380.0)],
-            graphics::WHITE
+            graphics::DrawMode::stroke(2.0),
+            [10.0, 10.0, 75.0, 80.0].into(),
+            graphics::BLACK
         )?;
         graphics::draw(ctx, &square, (na::Point2::new(0.0, 0.0),))?;
 
