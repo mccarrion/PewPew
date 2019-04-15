@@ -1,24 +1,30 @@
 extern crate ggez;
 
 use ggez::event;
+use ggez::event::{EventHandler, KeyCode, KeyMods};
 use ggez::graphics;
 use ggez::nalgebra as na;
+use ggez::input::keyboard;
 use ggez::{Context, GameResult};
 
 struct MainState {
     pos_x: f32,
 }
 
-impl MainState {
-    fn new(_ctx: &mut Context) -> GameResult<MainState> {
-        let s = MainState { pos_x: 0.0 };
-        Ok(s)
-    }
-}
-
-impl event::EventHandler for MainState {
+impl EventHandler for MainState {
     fn update(&mut self, _ctx: &mut Context) -> GameResult {
-        self.pos_x = self.pos_x % 800.0 + 1.0;
+        // Increase or decrease 'pos_x' if keyboard pressed
+        if keyboard::is_key_pressed(ctx, KeyCode::Right) {
+            if keyboard::is_mod_active(ctx, KeyMods::SHIFT) {
+                self.pos_x += 4.5;
+            }
+            self.pos_x += 0.5;
+        } else if keyboard::is_key_pressed(ctx, KeyCode::Left) {
+            if keyboard::is_mod_active(ctx, KeyMods::SHIFT) {
+                self.pos_x -= 4.5;
+            }
+            self.pos_x -= 0.5;
+        }
         Ok(())
     }
 
