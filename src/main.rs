@@ -11,8 +11,15 @@ struct MainState {
     pos_x: f32,
 }
 
+impl MainState {
+    fn new(_ctx: &mut Context) -> GameResult<MainState> {
+        let s = MainState { pos_x: 0.0 };
+        Ok(s)
+    }
+}
+
 impl EventHandler for MainState {
-    fn update(&mut self, _ctx: &mut Context) -> GameResult {
+    fn update(&mut self, ctx: &mut Context) -> GameResult {
         // Increase or decrease 'pos_x' if keyboard pressed
         if keyboard::is_key_pressed(ctx, KeyCode::Right) {
             if keyboard::is_mod_active(ctx, KeyMods::SHIFT) {
@@ -37,7 +44,7 @@ impl EventHandler for MainState {
             [10.0, 10.0, 75.0, 80.0].into(),
             graphics::BLACK
         )?;
-        graphics::draw(ctx, &square, (na::Point2::new(0.0, 0.0),))?;
+        graphics::draw(ctx, &square, graphics::DrawParam::default())?;
 
         graphics::present(ctx)?;
         Ok(())
@@ -55,8 +62,8 @@ impl EventHandler for MainState {
                 } else {
                     println!("Now you're not even trying!");
                 }
-                _ => (),
             }
+            _ => (),
         }
     }
 }
