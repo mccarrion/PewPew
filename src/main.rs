@@ -8,12 +8,12 @@ use ggez::input::keyboard;
 use ggez::{Context, GameResult};
 
 struct MainState {
-    pos_x: f32,
+    pos: (f32, f32),
 }
 
 impl MainState {
     fn new(_ctx: &mut Context) -> GameResult<MainState> {
-        let s = MainState { pos_x: 0.0 };
+        let s = MainState { pos: (x, y) };
         Ok(s)
     }
 }
@@ -23,14 +23,14 @@ impl EventHandler for MainState {
         // Increase or decrease 'pos_x' if keyboard pressed
         if keyboard::is_key_pressed(ctx, KeyCode::Right) {
             if keyboard::is_mod_active(ctx, KeyMods::SHIFT) {
-                self.pos_x += 4.5;
+                self.pos = (4.5, 0.0);
             }
-            self.pos_x += 0.5;
+            self.pos = (0.5, 0.0);
         } else if keyboard::is_key_pressed(ctx, KeyCode::Left) {
             if keyboard::is_mod_active(ctx, KeyMods::SHIFT) {
-                self.pos_x -= 4.5;
+                self.pos = (4.5, 0.0);
             }
-            self.pos_x -= 0.5;
+            self.pos = (0.5, 0.0);
         }
         Ok(())
     }
@@ -38,13 +38,15 @@ impl EventHandler for MainState {
     fn draw(&mut self, ctx: &mut Context) -> GameResult {
         graphics::clear(ctx, [1.0, 1.0, 1.0, 1.0].into());
 
-        let square = graphics::Mesh::new_rectangle(
+        let color = [0.0, 0.0, 1.0, 1.0].into();
+
+        let rectangle = graphics::Mesh::new_rectangle(
             ctx,
-            graphics::DrawMode::stroke(2.0),
-            [10.0, 10.0, 75.0, 80.0].into(),
-            graphics::BLACK
+            graphics::DrawMode::fill(),
+            self.pos.into(),
+            color
         )?;
-        graphics::draw(ctx, &square, graphics::DrawParam::default())?;
+        graphics::draw(ctx, &rectangle, (ggez::mint::Point2 { x: 0.0, y: 0.0 },))?;
 
         graphics::present(ctx)?;
         Ok(())
