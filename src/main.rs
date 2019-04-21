@@ -1,19 +1,26 @@
 extern crate ggez;
 
-use ggez::event;
 use ggez::event::{EventHandler, KeyCode, KeyMods};
-use ggez::graphics;
+use ggez::{event, graphics, Context, GameResult};
 use ggez::nalgebra as na;
 use ggez::input::keyboard;
-use ggez::{Context, GameResult};
 
 struct MainState {
-    pos: (f32, f32),
+    players: Player,
 }
 
 impl MainState {
     fn new(_ctx: &mut Context) -> GameResult<MainState> {
-        let s = MainState { pos: (x, y) };
+        // Incomplete
+        let player = Player::new(
+            Controls {
+                left: event::Keycode::Left,
+                right: event::Keycode::Right,
+            },
+        );
+        let s = MainState { 
+            players: player,
+        };
         Ok(s)
     }
 }
