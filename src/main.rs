@@ -5,6 +5,20 @@ use ggez::{event, graphics, Context, GameResult};
 use ggez::nalgebra as na;
 use ggez::input::keyboard;
 
+
+#[derive(Debug)]
+enum ActorType {
+    Player,
+}
+
+#[derive(Debug)]
+struct Actor {
+    tag: ActorType,
+    pos: Vector2,
+    prev_pos: Vector2,
+    velocity: Vector2,
+}
+
 struct MainState {
     players: Player,
 }
