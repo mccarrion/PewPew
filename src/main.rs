@@ -5,6 +5,8 @@ use ggez::{event, graphics, Context, GameResult};
 use ggez::nalgebra as na;
 use ggez::input::keyboard;
 
+type Point2 = na::Point2<f32>;
+type Vector2 = na::Vector2<f32>;
 
 #[derive(Debug)]
 enum ActorType {
@@ -14,29 +16,38 @@ enum ActorType {
 #[derive(Debug)]
 struct Actor {
     tag: ActorType,
-    pos: Vector2,
-    prev_pos: Vector2,
+    pos: Point2,
     velocity: Vector2,
 }
 
+fn create_player() -> Actor {
+    Actor {
+        tag: ActorType::Player,
+        pos: Point2::origin(),
+        velocity: na::zero(),
+    }
+}
+
 struct MainState {
-    players: Player,
+    player: Actor,
 }
 
 impl MainState {
     fn new(_ctx: &mut Context) -> GameResult<MainState> {
-        // Incomplete
-        let player = Player::new(
-            Controls {
-                left: event::Keycode::Left,
-                right: event::Keycode::Right,
-            },
-        );
+        let player = create_player();
         let s = MainState { 
-            players: player,
+            player,
         };
         Ok(s)
     }
+}
+
+fn draw_actor(
+    ctx: &mut Context,
+    actor: &Actor,
+    world_coords: (f32, f32),
+) -> GameResult {
+    // Need to fill this out
 }
 
 impl EventHandler for MainState {
@@ -58,6 +69,12 @@ impl EventHandler for MainState {
 
     fn draw(&mut self, ctx: &mut Context) -> GameResult {
         graphics::clear(ctx, [1.0, 1.0, 1.0, 1.0].into());
+        
+        let p = &self.player;
+        draw_actor(ctx, p, coords)?;
+
+        /*
+        This will have to be removed soonish
 
         let color = [0.0, 0.0, 1.0, 1.0].into();
 
@@ -71,6 +88,7 @@ impl EventHandler for MainState {
 
         graphics::present(ctx)?;
         Ok(())
+        */
     }
 
     fn key_down_event(&mut self, ctx: &mut Context, key: KeyCode, mods: KeyMods, _: bool) {
