@@ -45,33 +45,33 @@ impl MainState {
 fn draw_actor(
     ctx: &mut Context,
     actor: &Actor,
-    world_coords: (f32, f32),
 ) -> GameResult {
     // Need to fill this out
 }
 
 impl EventHandler for MainState {
     fn update(&mut self, ctx: &mut Context) -> GameResult {
-        // Increase or decrease 'pos_x' if keyboard pressed
-        if keyboard::is_key_pressed(ctx, KeyCode::Right) {
-            if keyboard::is_mod_active(ctx, KeyMods::SHIFT) {
-                self.pos = (4.5, 0.0);
-            }
-            self.pos = (0.5, 0.0);
-        } else if keyboard::is_key_pressed(ctx, KeyCode::Left) {
-            if keyboard::is_mod_active(ctx, KeyMods::SHIFT) {
-                self.pos = (4.5, 0.0);
-            }
-            self.pos = (0.5, 0.0);
+        const DESIRED_FPS: u32 = 60;
+
+        while timer::check_update_time(ctx, DESIRED_FPS) {
+            let seconds = 1.0 / (DESIRED_FPS as f32);
+
+            // Handle keyboard presses
+            player_handle_input(&mut self.player, &self.input, seconds);
+
+            // Update position of square
+            update_actor_position(&mut self.player, seconds);
         }
+
         Ok(())
     }
 
     fn draw(&mut self, ctx: &mut Context) -> GameResult {
         graphics::clear(ctx, [1.0, 1.0, 1.0, 1.0].into());
         
+
         let p = &self.player;
-        draw_actor(ctx, p, coords)?;
+        draw_actor(ctx, p)?;
 
         /*
         This will have to be removed soonish
@@ -85,10 +85,12 @@ impl EventHandler for MainState {
             color
         )?;
         graphics::draw(ctx, &rectangle, (ggez::mint::Point2 { x: 0.0, y: 0.0 },))?;
+        */
 
         graphics::present(ctx)?;
+        timer::yield_now();
         Ok(())
-        */
+
     }
 
     fn key_down_event(&mut self, ctx: &mut Context, key: KeyCode, mods: KeyMods, _: bool) {
