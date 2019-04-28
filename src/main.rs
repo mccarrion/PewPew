@@ -1,9 +1,9 @@
 extern crate ggez;
 
-use ggez::event::{EventHandler, KeyCode, KeyMods};
+use ggez::event::{self, EventHandler, KeyCode, KeyMods};
 use ggez::{event, graphics, Context, GameResult};
 use ggez::nalgebra as na;
-use ggez::input::keyboard;
+use ggez::timer;
 
 type Point2 = na::Point2<f32>;
 type Vector2 = na::Vector2<f32>;
@@ -28,6 +28,31 @@ fn create_player() -> Actor {
     }
 }
 
+fn player_handle_input(actor: &mut Actor, input: &InputState, dt: f32) {
+    actor.facing += dt
+}
+
+fn world_to_screen_coords(screen_width: f32, screen_height: f32, point: Point2) -> Point2 {
+    let x = point.x + screen_width / 2.0;
+    let y = screen_height - (point.y + screen_height / 2.0);
+    Point2::new(x, y)
+}
+
+#[derive(Debug)]
+struct InputState {
+    xaxis: f32,
+    yaxis: f32,
+}
+
+impl Default for InputState {
+    fn default() -> Self {
+        InputState {
+            xaxis: 0.0,
+            yaxis: 0.0,
+        }
+    }
+}
+
 struct MainState {
     player: Actor,
 }
@@ -45,8 +70,14 @@ impl MainState {
 fn draw_actor(
     ctx: &mut Context,
     actor: &Actor,
+    world_coords: (f32, f32),
 ) -> GameResult {
-    // Need to fill this out
+    let (screen_w, screen_h) = world_coords;
+    let pos = world_to_screen_coords(screen_w, screen_h, actor.pos);
+    let drawparams = graphics::DrawParam::new()
+        .dest(pos)
+        .offset(Point2::new(0.5, 0.5));
+    graphics::draw(ctx, drawparams)
 }
 
 impl EventHandler for MainState {
