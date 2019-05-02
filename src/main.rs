@@ -17,6 +17,7 @@ enum ActorType {
 struct Actor {
     tag: ActorType,
     pos: Point2,
+    facing: f32,
     velocity: Vector2,
 }
 
@@ -28,8 +29,20 @@ fn create_player() -> Actor {
     }
 }
 
+// Acceleration in pixels per second.
+const PLAYER_THRUST: f32 = 100.0;
+
 fn player_handle_input(actor: &mut Actor, input: &InputState, dt: f32) {
-    actor.facing += dt
+    //actor.facing += dt * input.xaxis;
+
+    if input.yaxis > 0.0 {
+        player_thrust(actor, dt);
+    }
+}
+
+fn player_thrust(actor: &mut Actor, dt: f32) {
+    let thrust_vector = actor.facing * (PLAYER_THRUST);
+    actor.velocity += thrust_vector * (dt);
 }
 
 fn world_to_screen_coords(screen_width: f32, screen_height: f32, point: Point2) -> Point2 {
