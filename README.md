@@ -15,7 +15,7 @@ First set of goals:
 - [ ] Add AI to non-player objects
 
 ### Game Engine
-This game will use the ggez engine for development. Current code for this game is drawing heavily from 05_astroblasto.rs code in the example set provided by ggez. Once base is built out and working, code will diverge more heavily towards arena based shooter.
+This game will use the ggez engine for development. Current iteration of this game is based on 05_astroblasto in the example set provided by ggez. After a working iteration is complete, code will begin to be restructered and refactored in a direction away from 05_astroblasto.
 
 ### Goal of this Repo
 The end goal would be to create a 16 bit arena zombie shooter.
