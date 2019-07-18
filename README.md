@@ -8,8 +8,8 @@ forward.
 
 First set of goals:
 - [x] Draw player
-- [ ] Render pixel art
-- [ ] Handle player input
+- [x] Render pixel art
+- [x] Handle player input
 - [ ] Collision detection
 - [ ] Draw non-player objects
 - [ ] Add AI to non-player objects
